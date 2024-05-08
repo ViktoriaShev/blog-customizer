@@ -44,9 +44,6 @@ export const ArticleParamsForm = ({
 	const [selectContentWidth, setSelectContentWidth] = useState<OptionType>(
 		currentArticleState.contentWidth
 	);
-	const handleToggleSidebar = () => {
-		setIsOpen(!isOpen);
-	};
 	const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setCurrentArticleState({
@@ -68,13 +65,20 @@ export const ArticleParamsForm = ({
 	useOutsideClickClose({
 		isOpen,
 		rootRef,
-		onClose: handleToggleSidebar,
+		onClose: () => {
+			setIsOpen(false);
+		},
 		onChange: setIsOpen,
 		event: 'mousedown',
 	});
 	return (
 		<div ref={rootRef}>
-			<ArrowButton onClick={handleToggleSidebar} isOpen={isOpen} />
+			<ArrowButton
+				onClick={() => {
+					setIsOpen(!isOpen);
+				}}
+				isOpen={isOpen}
+			/>
 			<aside
 				className={clsx(styles.container, isOpen && styles.container_open)}>
 				<form
@@ -84,43 +88,43 @@ export const ArticleParamsForm = ({
 					<Text
 						size={31}
 						weight={800}
-						align={'left'}
-						family={'open-sans'}
-						fontStyle={'normal'}
-						uppercase={false}>
+						align='left'
+						family='open-sans'
+						fontStyle='normal'
+						uppercase={true}>
 						Задайте параметры
 					</Text>
 					<Select
 						selected={selectFontFamily}
 						options={fontFamilyOptions}
 						onChange={setSelectFontFamily}
-						title={'шрифт'}
+						title='шрифт'
 					/>
 					<RadioGroup
-						name={'font-size'}
+						name='font-size'
 						options={fontSizeOptions}
 						selected={selectFontSize}
-						title={'Размер шрифта'}
+						title='Размер шрифта'
 						onChange={setSelectFontSize}
 					/>
 					<Select
 						selected={selectFontColor}
 						options={fontColors}
 						onChange={setSelectFontColor}
-						title={'цвет шрифта'}
+						title='цвет шрифта'
 					/>
 					<Separator />
 					<Select
 						selected={selectBGColor}
 						options={backgroundColors}
 						onChange={setSelectBGColor}
-						title={'цвет фона'}
+						title='цвет фона'
 					/>
 					<Select
 						selected={selectContentWidth}
 						options={contentWidthArr}
 						onChange={setSelectContentWidth}
-						title={'ширина контента'}
+						title='ширина контента'
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' onClick={resetStyles} />
